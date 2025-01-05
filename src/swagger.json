@@ -1,0 +1,78 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Employees API",
+    "description": "A mock REST API for employee data",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/api/v1",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/employees": {
+      "get": {
+        "summary": "Returns a list of employees",
+        "responses": {
+          "200": {
+            "description": "A JSON array of employees",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Employee"
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully retrieved data"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Employee": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "salary": {
+            "type": "number",
+            "example": 75000
+          },
+          "age": {
+            "type": "integer",
+            "example": 30
+          },
+          "profile_image": {
+            "type": "string",
+            "example": "https://example.com/avatar.jpg"
+          }
+        }
+      }
+    }
+  }
+}
