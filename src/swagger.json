@@ -12,10 +12,202 @@
     }
   ],
   "paths": {
+    "/employees": {
+      "get": {
+        "summary": "Get all employees",
+        "tags": ["Employees"],
+        "responses": {
+          "200": {
+            "description": "A list of employees",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployeesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employee/{id}": {
+      "get": {
+        "summary": "Get employee by ID",
+        "tags": ["Employees"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the employee",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employee found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployeeResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Employee not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create": {
+      "post": {
+        "summary": "Create a new employee",
+        "tags": ["Employees"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEmployeeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Employee created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployeeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update/{id}": {
+      "put": {
+        "summary": "Update an employee",
+        "tags": ["Employees"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the employee to update",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEmployeeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Employee updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployeeResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Employee not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete/{id}": {
+      "delete": {
+        "summary": "Delete an employee",
+        "tags": ["Employees"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the employee to delete",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employee deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployeeResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Employee not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/health": {
       "get": {
         "summary": "Get API health status",
-        "description": "Returns the health status of the API including last update time and database info",
         "tags": ["System"],
         "responses": {
           "200": {
@@ -23,36 +215,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "success"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "lastCronUpdate": {
-                          "type": "string",
-                          "format": "date-time",
-                          "example": "2024-01-01T12:00:00.000Z"
-                        },
-                        "fileLastModified": {
-                          "type": "string",
-                          "format": "date-time",
-                          "example": "2024-01-01T12:00:00.000Z"
-                        },
-                        "fileSize": {
-                          "type": "number",
-                          "example": 1024
-                        },
-                        "uptime": {
-                          "type": "number",
-                          "example": 3600
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/HealthResponse"
                 }
               }
             }
@@ -63,7 +226,6 @@
     "/trigger-update": {
       "get": {
         "summary": "Trigger database update",
-        "description": "Manually triggers a database update",
         "tags": ["System"],
         "responses": {
           "200": {
@@ -71,80 +233,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "success"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Database update triggered successfully"
-                    },
-                    "timestamp": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2024-01-01T12:00:00.000Z"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Update failed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "error"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Failed to update database"
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error writing to file"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/employees": {
-      "get": {
-        "summary": "Returns a list of employees",
-        "tags": ["Employees"],
-        "responses": {
-          "200": {
-            "description": "A JSON array of employees",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "success"
-                    },
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Employee"
-                      }
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Successfully retrieved data"
-                    }
-                  }
+                  "$ref": "#/components/schemas/TriggerResponse"
                 }
               }
             }
@@ -157,6 +246,7 @@
     "schemas": {
       "Employee": {
         "type": "object",
+        "required": ["id", "name", "salary", "age"],
         "properties": {
           "id": {
             "type": "integer",
@@ -164,19 +254,211 @@
           },
           "name": {
             "type": "string",
+            "minLength": 2,
+            "maxLength": 50,
             "example": "John Doe"
           },
           "salary": {
             "type": "number",
+            "minimum": 0,
+            "maximum": 1000000,
             "example": 75000
           },
           "age": {
             "type": "integer",
+            "minimum": 18,
+            "maximum": 100,
             "example": 30
           },
           "profile_image": {
             "type": "string",
+            "format": "uri",
             "example": "https://example.com/avatar.jpg"
+          }
+        }
+      },
+      "CreateEmployeeDto": {
+        "type": "object",
+        "required": ["name", "salary", "age"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 50,
+            "example": "John Doe"
+          },
+          "salary": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000,
+            "example": 75000
+          },
+          "age": {
+            "type": "integer",
+            "minimum": 18,
+            "maximum": 100,
+            "example": 30
+          },
+          "profile_image": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://example.com/avatar.jpg"
+          }
+        }
+      },
+      "UpdateEmployeeDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 50,
+            "example": "John Doe"
+          },
+          "salary": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000,
+            "example": 75000
+          },
+          "age": {
+            "type": "integer",
+            "minimum": 18,
+            "maximum": 100,
+            "example": 30
+          },
+          "profile_image": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://example.com/avatar.jpg"
+          }
+        }
+      },
+      "EmployeeResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Employee"
+          },
+          "message": {
+            "type": "string",
+            "example": "Successfully retrieved employee"
+          }
+        }
+      },
+      "EmployeesResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Employee"
+            }
+          },
+          "message": {
+            "type": "string",
+            "example": "Successfully retrieved employees"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "data": {
+            "type": "null"
+          },
+          "message": {
+            "type": "string",
+            "example": "Error message here"
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "data": {
+            "type": "null"
+          },
+          "message": {
+            "type": "string",
+            "example": "Validation failed"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "example": "salary"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Salary must be a positive number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "HealthResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "lastCronUpdate": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "fileLastModified": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "fileSize": {
+                "type": "number"
+              },
+              "uptime": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
+      "TriggerResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Database update triggered successfully"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       }
@@ -184,12 +466,12 @@
   },
   "tags": [
     {
-      "name": "System",
-      "description": "System management endpoints"
+      "name": "Employees",
+      "description": "Employee management endpoints"
     },
     {
-      "name": "Employees",
-      "description": "Employee data endpoints"
+      "name": "System",
+      "description": "System management endpoints"
     }
   ]
 }

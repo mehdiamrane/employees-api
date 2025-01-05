@@ -1,9 +1,10 @@
+import express from "express";
 import jsonServer from "json-server";
 import cron from "node-cron";
 import swaggerUi from "swagger-ui-express";
 import { config } from "./config";
 import { updateDatabase } from "./services/databaseService";
-import { limiter, simulateDelay, simulateErrors } from "./middleware";
+import { jsonErrorHandler, limiter, simulateDelay, simulateErrors } from "./middleware";
 import { watchDatabaseFile } from "./utils/fileMonitor";
 import { logCronExecution, logServerStatus } from "./utils/logger";
 import routes from "./routes";
@@ -28,6 +29,9 @@ if (!cron.validate(config.cronSchedule)) {
   console.error("Invalid cron expression");
   process.exit(1);
 }
+// JSON parsing middleware
+server.use(express.json());
+server.use(jsonErrorHandler);
 
 // Apply middlewares
 server.use(middlewares);
