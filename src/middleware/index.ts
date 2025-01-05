@@ -13,11 +13,20 @@ export const simulateDelay = (req: Request, res: Response, next: NextFunction) =
 };
 
 export const simulateErrors = (req: Request, res: Response, next: NextFunction) => {
+  // Skip errors for system endpoints and swagger
+  if (
+    req.path.startsWith("/api/v1/health") ||
+    req.path.startsWith("/api/v1/trigger-update") ||
+    req.path.startsWith("/api-docs")
+  ) {
+    return next();
+  }
+
   if (Math.random() < 0.1) {
     return res.status(500).json({
       status: "error",
       data: null,
-      message: "Internal server error",
+      message: "Internal server error (simulated)",
     });
   }
   next();
