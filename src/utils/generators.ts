@@ -7,8 +7,8 @@ export function generateEmployees(count: number): Employee[] {
     employees.push({
       id: i + 1,
       name: faker.name.findName(),
-      salary: faker.random.number({ min: 30000, max: 150000 }),
-      age: faker.random.number({ min: 20, max: 65 }),
+      salary: faker.datatype.number({ min: 30000, max: 150000 }),
+      age: faker.datatype.number({ min: 20, max: 65 }),
       profile_image: faker.image.avatar(),
     });
   }

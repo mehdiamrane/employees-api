@@ -12,9 +12,116 @@
     }
   ],
   "paths": {
+    "/health": {
+      "get": {
+        "summary": "Get API health status",
+        "description": "Returns the health status of the API including last update time and database info",
+        "tags": ["System"],
+        "responses": {
+          "200": {
+            "description": "Health check successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "lastCronUpdate": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2024-01-01T12:00:00.000Z"
+                        },
+                        "fileLastModified": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2024-01-01T12:00:00.000Z"
+                        },
+                        "fileSize": {
+                          "type": "number",
+                          "example": 1024
+                        },
+                        "uptime": {
+                          "type": "number",
+                          "example": 3600
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trigger-update": {
+      "get": {
+        "summary": "Trigger database update",
+        "description": "Manually triggers a database update",
+        "tags": ["System"],
+        "responses": {
+          "200": {
+            "description": "Update triggered successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Database update triggered successfully"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-01-01T12:00:00.000Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Update failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to update database"
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Error writing to file"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/employees": {
       "get": {
         "summary": "Returns a list of employees",
+        "tags": ["Employees"],
         "responses": {
           "200": {
             "description": "A JSON array of employees",
@@ -74,5 +181,15 @@
         }
       }
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "System",
+      "description": "System management endpoints"
+    },
+    {
+      "name": "Employees",
+      "description": "Employee data endpoints"
+    }
+  ]
 }
