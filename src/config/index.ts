@@ -8,7 +8,15 @@ export const config = {
       ? "0 0 * * *" // Every day at midnight (00:00) in production
       : "0 0 * * *", // Every day at midnight (00:00) in development
   dbPath: "db.json",
+  simulatedDelay: {
+    min: Number(process.env.SIMULATED_DELAY_MIN || 0),
+    max: Number(process.env.SIMULATED_DELAY_MAX || 1000),
+  },
+  simulatedErrors: {
+    percentage: Number(process.env.SIMULATED_ERROR_PERCENTAGE || 10),
+  },
+  rateLimit: {
+    windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000),
+    max: Number(process.env.RATE_LIMIT_MAX_REQUESTS || 100),
+  },
 };
-
-// "0 0 * * * *" // Every hour (at minute 0)
-// "0 */10 * * * *" // Every 10 minutes
