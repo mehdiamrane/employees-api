@@ -20,7 +20,7 @@ updateDatabase();
 watchDatabaseFile();
 
 // Schedule database updates
-const cronJob = cron.schedule(config.cronSchedule, () => {
+cron.schedule(config.cronSchedule, () => {
   logCronExecution("Running database update...");
   updateDatabase();
 });
@@ -30,6 +30,10 @@ if (!cron.validate(config.cronSchedule)) {
   console.error("Invalid cron expression");
   process.exit(1);
 }
+
+// Render uses a proxy to forward requests, but Express isn't configured to trust it.
+server.set("trust proxy", 1);
+
 // JSON parsing middleware
 server.use(express.json());
 server.use(jsonErrorHandler);
