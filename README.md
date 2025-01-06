@@ -103,9 +103,9 @@ Employee schema:
 
 ```typescript
 {
-  name: string, // 2-50 characters
-  salary: number, // 0-1,000,000
-  age: number, // 18-100
+  employee_name: string, // 2-50 characters
+  employee_salary: number, // 0-1,000,000
+  employee_age: number, // 18-100
   profile_image?: string; // Valid URL (optional)
 }
 ```

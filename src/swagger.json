@@ -246,25 +246,25 @@
     "schemas": {
       "Employee": {
         "type": "object",
-        "required": ["id", "name", "salary", "age"],
+        "required": ["id", "employee_name", "employee_salary", "employee_age"],
         "properties": {
           "id": {
             "type": "integer",
             "example": 1
           },
-          "name": {
+          "employee_name": {
             "type": "string",
             "minLength": 2,
             "maxLength": 50,
             "example": "John Doe"
           },
-          "salary": {
+          "employee_salary": {
             "type": "number",
             "minimum": 0,
             "maximum": 1000000,
             "example": 75000
           },
-          "age": {
+          "employee_age": {
             "type": "integer",
             "minimum": 18,
             "maximum": 100,
@@ -279,21 +279,21 @@
       },
       "CreateEmployeeDto": {
         "type": "object",
-        "required": ["name", "salary", "age"],
+        "required": ["employee_name", "employee_salary", "employee_age"],
         "properties": {
-          "name": {
+          "employee_name": {
             "type": "string",
             "minLength": 2,
             "maxLength": 50,
             "example": "John Doe"
           },
-          "salary": {
+          "employee_salary": {
             "type": "number",
             "minimum": 0,
             "maximum": 1000000,
             "example": 75000
           },
-          "age": {
+          "employee_age": {
             "type": "integer",
             "minimum": 18,
             "maximum": 100,
@@ -309,19 +309,19 @@
       "UpdateEmployeeDto": {
         "type": "object",
         "properties": {
-          "name": {
+          "employee_name": {
             "type": "string",
             "minLength": 2,
             "maxLength": 50,
             "example": "John Doe"
           },
-          "salary": {
+          "employee_salary": {
             "type": "number",
             "minimum": 0,
             "maximum": 1000000,
             "example": 75000
           },
-          "age": {
+          "employee_age": {
             "type": "integer",
             "minimum": 18,
             "maximum": 100,
@@ -406,7 +406,7 @@
               "properties": {
                 "field": {
                   "type": "string",
-                  "example": "salary"
+                  "example": "employee_salary"
                 },
                 "message": {
                   "type": "string",
