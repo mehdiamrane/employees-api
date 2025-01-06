@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && tsc && ls dist",
     "start": "NODE_ENV=production node dist/index.js",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "type-check": "tsc --noEmit"
