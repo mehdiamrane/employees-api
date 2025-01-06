@@ -42,6 +42,7 @@ SIMULATED_DELAY_MAX=1000
 SIMULATED_ERROR_PERCENTAGE=10
 RATE_LIMIT_WINDOW_MS=900000
 RATE_LIMIT_MAX_REQUESTS=100
+CLIENT_URL=http://localhost:3000
 ```
 
 - `SIMULATED_DELAY_MIN`: Minimum delay in milliseconds (default: 0)
@@ -49,6 +50,7 @@ RATE_LIMIT_MAX_REQUESTS=100
 - `SIMULATED_ERROR_PERCENTAGE`: Percentage of requests that will return an error (default: 10)
 - `RATE_LIMIT_WINDOW_MS`: Rate limiting window in milliseconds (default: 900000 - 15 minutes)
 - `RATE_LIMIT_MAX_REQUESTS`: Maximum requests per window (default: 100)
+- `CLIENT_URL`: URL of the client (default: http://localhost:3000)
 
 ## Usage
 

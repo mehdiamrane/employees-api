@@ -1,7 +1,9 @@
 import express from "express";
+import cors from "cors";
 import cron from "node-cron";
 import swaggerUi from "swagger-ui-express";
 import { config } from "./config";
+import { corsOptions } from "./config/cors";
 import { updateDatabase } from "./services/databaseService";
 import { jsonErrorHandler, limiter, simulateDelay, simulateErrors } from "./middleware";
 import { watchDatabaseFile } from "./utils/fileMonitor";
@@ -16,6 +18,7 @@ const server = express();
 // Render uses a proxy to forward requests, but Express isn't configured to trust it.
 server.set("trust proxy", 1);
 
+server.use(cors(corsOptions));
 server.use(morgan("dev")); // logs requests
 
 server.use(express.static("public"));
