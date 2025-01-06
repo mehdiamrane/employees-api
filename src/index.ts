@@ -14,9 +14,10 @@ import swaggerDocument from "./swagger.json";
 const server = jsonServer.create();
 const middlewares = jsonServer.defaults();
 
-// Initialize
-watchDatabaseFile();
+// Initialize database first
 updateDatabase();
+// Then start watching the file
+watchDatabaseFile();
 
 // Schedule database updates
 const cronJob = cron.schedule(config.cronSchedule, () => {

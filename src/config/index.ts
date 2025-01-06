@@ -7,7 +7,7 @@ export const config = {
     process.env.NODE_ENV === "production"
       ? "0 0 * * *" // Every day at midnight (00:00) in production
       : "0 0 * * *", // Every day at midnight (00:00) in development
-  dbPath: "db.json",
+  dbPath: process.env.DB_PATH || "db.json",
   simulatedDelay: {
     min: Number(process.env.SIMULATED_DELAY_MIN || 0),
     max: Number(process.env.SIMULATED_DELAY_MAX || 1000),
