@@ -12,6 +12,10 @@ import morgan from "morgan";
 
 // Create server
 const server = express();
+
+// Render uses a proxy to forward requests, but Express isn't configured to trust it.
+server.set("trust proxy", 1);
+
 server.use(morgan("dev")); // logs requests
 
 server.use(express.static("public"));
@@ -33,9 +37,6 @@ if (!cron.validate(config.cronSchedule)) {
   console.error("Invalid cron expression");
   process.exit(1);
 }
-
-// Render uses a proxy to forward requests, but Express isn't configured to trust it.
-server.set("trust proxy", 1);
 
 // JSON parsing middleware
 server.use(jsonErrorHandler);
