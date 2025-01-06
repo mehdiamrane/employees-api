@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import fs from "fs";
 import { config } from "../config";
 import { CreateEmployeeDto, Employee, UpdateEmployeeDto } from "../types";
-import faker from "faker";
 
 function readDatabase(): { employees: Employee[] } {
   const data = fs.readFileSync(config.dbPath, "utf8");
