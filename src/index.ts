@@ -1,5 +1,4 @@
 import express from "express";
-import jsonServer from "json-server";
 import cron from "node-cron";
 import swaggerUi from "swagger-ui-express";
 import { config } from "./config";
@@ -9,10 +8,14 @@ import { watchDatabaseFile } from "./utils/fileMonitor";
 import { logCronExecution, logServerStatus } from "./utils/logger";
 import routes from "./routes";
 import swaggerDocument from "./swagger.json";
+import morgan from "morgan";
 
 // Create server
-const server = jsonServer.create();
-const middlewares = jsonServer.defaults();
+const server = express();
+server.use(morgan("dev")); // logs requests
+
+server.use(express.static("public"));
+server.use(express.json());
 
 // Initialize database first
 updateDatabase();
@@ -35,11 +38,9 @@ if (!cron.validate(config.cronSchedule)) {
 server.set("trust proxy", 1);
 
 // JSON parsing middleware
-server.use(express.json());
 server.use(jsonErrorHandler);
 
 // Apply middlewares
-server.use(middlewares);
 server.use(limiter);
 server.use(simulateDelay);
 server.use(simulateErrors);

@@ -4,6 +4,6 @@ export const logCronExecution = (message: string): void => {
 };
 
 export const logServerStatus = (port: number): void => {
-  console.log(`JSON Server is running on port ${port}`);
+  console.log(`Server is running on port ${port}`);
   console.log(`API Documentation available at http://localhost:${port}/api-docs`);
 };
