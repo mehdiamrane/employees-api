@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import fs from "fs";
 import { config } from "../config";
 import { CreateEmployeeDto, Employee, UpdateEmployeeDto } from "../types";
+import { createEmployeeSchema } from "../validation/employeeSchemas";
+import { ZodError, ZodIssue } from "zod";
 
 function readDatabase(): { employees: Employee[] } {
   const data = fs.readFileSync(config.dbPath, "utf8");
@@ -86,16 +88,36 @@ export const updateEmployee = (req: Request, res: Response): void => {
       return;
     }
 
-    data.employees[employeeIndex] = {
+    // Create the updated employee object
+    const updatedEmployee = {
       ...data.employees[employeeIndex],
       ...updateData,
     };
 
+    // Validate the final employee object against the create schema
+    // This ensures all fields are valid, not just the updated ones
+    try {
+      createEmployeeSchema.parse(updatedEmployee);
+    } catch (validationError) {
+      res.status(400).json({
+        status: "error",
+        data: null,
+        message: "Validation failed",
+        errors: (validationError as ZodError).issues.map((e: ZodIssue) => ({
+          field: e.path.join("."),
+          message: e.message,
+        })),
+      });
+      return;
+    }
+
+    // If validation passes, update the employee
+    data.employees[employeeIndex] = updatedEmployee;
     writeDatabase(data);
 
     res.json({
       status: "success",
-      data: data.employees[employeeIndex],
+      data: updatedEmployee,
       message: "Successfully updated employee",
     });
   } catch (error) {

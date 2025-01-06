@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { AnyZodObject, ZodError, ZodTypeAny } from "zod";
+import { AnyZodObject, ZodError } from "zod";
 
 export const validatePayload = (schema: AnyZodObject) => async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -22,19 +22,3 @@ export const validatePayload = (schema: AnyZodObject) => async (req: Request, re
     }
   }
 };
-
-// Helper function to identify missing required fields
-function getMissingFields(schema: AnyZodObject, data: any): string {
-  const shape = schema.shape as Record<string, ZodTypeAny>;
-  const missingFields = [];
-
-  for (const [key, value] of Object.entries(shape)) {
-    if (!("isOptional" in value) || !value.isOptional()) {
-      if (!data || !(key in data)) {
-        missingFields.push(key);
-      }
-    }
-  }
-
-  return missingFields.join(", ");
-}
