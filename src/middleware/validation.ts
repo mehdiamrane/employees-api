@@ -4,13 +4,10 @@ import { AnyZodObject, ZodError, ZodTypeAny } from "zod";
 export const validatePayload = (schema: AnyZodObject) => async (req: Request, res: Response, next: NextFunction) => {
   try {
     const validatedData = schema.parse(req.body);
-    console.log("validatedData:", validatedData);
     req.body = validatedData;
     next();
   } catch (error) {
     if (error instanceof ZodError) {
-      console.log("req.body:", req.body);
-      // console.log("error:", error);
       res.status(400).json({
         status: "error",
         data: null,
