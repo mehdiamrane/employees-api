@@ -4,13 +4,13 @@
   "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && tsc && ls dist",
+    "build": "npm run clean && tsc",
     "start": "NODE_ENV=production node dist/index.js",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@faker-js/faker": "^9.3.0",
+    "@faker-js/faker": "^8.4.1",
     "dotenv": "^16.4.7",
     "express": "^4.18.2",
     "express-rate-limit": "^6.7.0",
