@@ -1,4 +1,4 @@
-const allowedOrigins = [process.env.CLIENT_URL];
+const allowedOrigins = [process.env.API_URL, process.env.CLIENT_URL];
 
 export const corsOptions = {
   origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
@@ -10,14 +10,16 @@ export const corsOptions = {
       return callback(null, true);
     }
 
-    // Check other allowed origins
-    if (allowedOrigins.includes(origin)) {
+    // Filter out undefined/null values and check other allowed origins
+    if (allowedOrigins.filter(Boolean).includes(origin)) {
       return callback(null, true);
     }
 
+    console.log(`Blocked origin: ${origin}`); // Helpful for debugging
     callback(new Error("Not allowed by CORS"));
   },
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+  exposedHeaders: ["Content-Range", "X-Content-Range"],
   maxAge: 86400,
 };
